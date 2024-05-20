@@ -8,6 +8,7 @@ const cart = document.createElement("button");
 cart.id = "cart";
 cart.innerText = "Carrito";
 
+
 box.appendChild(products);
 box.appendChild(cart);
 
@@ -15,6 +16,8 @@ const prinBox = document.getElementById("page");
 page.className = "page";
 
 products.addEventListener("click", () => showCards(flowers));
+
+let cartArray = [];
 
 let counters = flowers.reduce((acc, flower) => {
     acc[flower.id] = 0;
@@ -51,7 +54,6 @@ function createCards(flowers) {
         item.appendChild(cont);
         item.appendChild(button2);
         
-
         card.appendChild(img);
         card.appendChild(item);
 
@@ -67,9 +69,45 @@ function modifyProducts (op, prodID) {
     }
     const contadorEnDOM = document.getElementById("counter_" + prodID);
     contadorEnDOM.innerText = counters[prodID];
+    cartArray = flowers.filter((el) => counters[el.id] > 0)
 }
 
 function showCards(flowers) {
     prinBox.innerHTML ="";
     createCards(flowers)
 }
+
+cart.addEventListener("click", () => showCart(cartArray));
+
+function createCart(cartArray) {
+    if(cartArray.length === 0) {
+        const anyProducts = document.createElement("p")
+        anyProducts.innerText = "No hay productos en tu carrito"
+
+        prinBox.appendChild(anyProducts)
+    } else {
+        cartArray.forEach((el) => {
+            const row = document.createElement("div");
+            row.id = "row"
+    
+            const img_row = document.createElement("img");
+            img_row.src = el.img
+            img_row.id = "img_row"
+    
+            const p_row = document.createElement("p");
+            p_row.innerText = el.name + " " + counters[el]
+    
+            row.appendChild(img_row)
+            row.appendChild(p_row)
+            prinBox.appendChild(row);
+        })
+    }
+    
+}
+
+function showCart(cartArray) {
+    prinBox.innerHTML ="";
+    createCart(cartArray)
+    
+}
+console.log(cartArray)
