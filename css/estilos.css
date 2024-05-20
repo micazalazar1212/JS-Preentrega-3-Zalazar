@@ -2,13 +2,18 @@ body {
     padding: 0px;
     margin: 0px;
     text-align: center;
+    background-color: bisque;
 }
 
 .box {
     background-color: pink;
 }
 
-
+.page {
+    display: flex;
+    flex-wrap: wrap;
+    
+}
 
 .imgCards {
     height: 150px;
