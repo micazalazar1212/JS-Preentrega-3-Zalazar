@@ -64,10 +64,14 @@ function createCards(flowers) {
 function modifyProducts (op, prodID) {
     if (op === "+"){
         counters[prodID] +=1;
-    } else if (op === "-"){
+    } else if (op === "-" && counters[prodID] > 0){
         counters[prodID] -=1;
     }
     const contadorEnDOM = document.getElementById("counter_" + prodID);
+
+    // if (counters[prodID] >=0 )  {
+    //     contadorEnDOM.innerText = counters[prodID];
+    // }
     contadorEnDOM.innerText = counters[prodID];
     cartArray = flowers.filter((el) => counters[el.id] > 0)
 }
