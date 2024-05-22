@@ -1,14 +1,21 @@
 const box = document.getElementById("conteiner");
 box.className = "box";
 
+const title = document.createElement("h1")
+title.innerText = "Bienvenido a nuestra tienda de flores y ramos Lunaria"
+title.className = "title"
+
 const products = document.createElement("button");
 products.id = "products";
 products.innerText = "Productos";
+products.className = "products";
+
 const cart = document.createElement("button");
 cart.id = "cart";
 cart.innerText = "Carrito";
+cart.className = "products cart";
 
-
+box.appendChild(title);
 box.appendChild(products);
 box.appendChild(cart);
 
@@ -17,7 +24,7 @@ page.className = "page";
 
 products.addEventListener("click", () => showCards(flowers));
 
-let cartArray = [];
+let cartArray = JSON.parse(localStorage.getItem("cartArray")) || [];;
 
 let counters = flowers.reduce((acc, flower) => {
     acc[flower.id] = 0;
@@ -68,50 +75,59 @@ function modifyProducts (op, prodID) {
         counters[prodID] -=1;
     }
     const contadorEnDOM = document.getElementById("counter_" + prodID);
-
-    // if (counters[prodID] >=0 )  {
-    //     contadorEnDOM.innerText = counters[prodID];
-    // }
     contadorEnDOM.innerText = counters[prodID];
     cartArray = flowers.filter((el) => counters[el.id] > 0)
+    localStorage.setItem("cartArray", (JSON.stringify(cartArray)))
+    
+    console.log(JSON.stringify(cartArray))
 }
 
 function showCards(flowers) {
     prinBox.innerHTML ="";
+    
     createCards(flowers)
 }
 
 cart.addEventListener("click", () => showCart(cartArray));
 
 function createCart(cartArray) {
+    const listU = document.createElement("ul");
+    listU.id = "list";
+    listU.innerHTML = "";
+    
     if(cartArray.length === 0) {
         const anyProducts = document.createElement("p")
         anyProducts.innerText = "No hay productos en tu carrito"
 
         prinBox.appendChild(anyProducts)
     } else {
+        const text = document.createElement("h1");
+        text.innerText = "Tus productos seleccionados: "
+        text.className = "textCart"
+        listU.appendChild(text)
         cartArray.forEach((el) => {
-            const row = document.createElement("div");
-            row.id = "row"
-    
+            const row = document.createElement("li");
+            row.className = "row"
+
             const img_row = document.createElement("img");
             img_row.src = el.img
-            img_row.id = "img_row"
+            img_row.className = "imgRow"
     
             const p_row = document.createElement("p");
-            p_row.innerText = el.name + " " + counters[el]
+            p_row.innerText = el.name
+            p_row.className = "pRow"
     
-            row.appendChild(img_row)
-            row.appendChild(p_row)
-            prinBox.appendChild(row);
+            row.appendChild(img_row);
+            row.appendChild(p_row);
+
+            listU.appendChild(row);
+            
         })
-    }
-    
+        prinBox.appendChild(listU);
+    } 
 }
 
 function showCart(cartArray) {
     prinBox.innerHTML ="";
     createCart(cartArray)
-    
 }
-console.log(cartArray)

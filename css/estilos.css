@@ -5,6 +5,23 @@ body {
     background-color: bisque;
 }
 
+.title {
+    margin: 0px 0px 10px 0px;
+    font-size:25px;
+    font-weight: 500;
+    font-style: italic;
+}
+.products {
+    margin: 0px 10px 5px 10px;
+    background-color: white;
+    border-width: 1px;
+    border-radius: 10%;
+}
+
+.cart {
+    padding: 1px 15px;
+}
+
 .box {
     background-color: pink;
 }
@@ -12,6 +29,7 @@ body {
 .page {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     
 }
 
@@ -22,5 +40,11 @@ body {
 
 .row {
     display: flex;
-    flex-wrap: wrap;
 }
+
+.imgRow {
+    height: 100px;
+    width: 100px;
+}
+
+
