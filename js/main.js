@@ -45,14 +45,16 @@ function createCards(flowers) {
         const button1 = document.createElement("button");
         button1.innerText = "+";
         button1.id = "but1";
-        
+
         const button2 = document.createElement("button");
         button2.innerText = "-";
         button2.id = "but2";
 
-        const cont = document.createElement("button");        
-        cont.innerText = counters[el.id];;
-        cont.id = "counter_" + el.id
+        const cont = document.createElement("input");
+        cont.value = counters[el.id];
+        cont.id = "counter_" + el.id;
+        cont.readOnly = true;
+        cont.className = "counter"
 
         button1.addEventListener("click", () => modifyProducts("+", el.id));
         button2.addEventListener("click", () => modifyProducts("-", el.id));
@@ -60,7 +62,7 @@ function createCards(flowers) {
         item.appendChild(button1);
         item.appendChild(cont);
         item.appendChild(button2);
-        
+
         card.appendChild(img);
         card.appendChild(item);
 
@@ -74,17 +76,20 @@ function modifyProducts (op, prodID) {
     } else if (op === "-" && counters[prodID] > 0){
         counters[prodID] -=1;
     }
+    flowers[prodID].cantidad = counters[prodID]
     const contadorEnDOM = document.getElementById("counter_" + prodID);
-    contadorEnDOM.innerText = counters[prodID];
+    contadorEnDOM.value = counters[prodID];
     cartArray = flowers.filter((el) => counters[el.id] > 0)
-    localStorage.setItem("cartArray", (JSON.stringify(cartArray)))
     
+
+    localStorage.setItem("cartArray", (JSON.stringify(cartArray)))
+
     console.log(JSON.stringify(cartArray))
 }
 
 function showCards(flowers) {
     prinBox.innerHTML ="";
-    
+
     createCards(flowers)
 }
 
@@ -94,7 +99,7 @@ function createCart(cartArray) {
     const listU = document.createElement("ul");
     listU.id = "list";
     listU.innerHTML = "";
-    
+
     if(cartArray.length === 0) {
         const anyProducts = document.createElement("p")
         anyProducts.innerText = "No hay productos en tu carrito"
@@ -112,22 +117,25 @@ function createCart(cartArray) {
             const img_row = document.createElement("img");
             img_row.src = el.img
             img_row.className = "imgRow"
-    
+
             const p_row = document.createElement("p");
-            p_row.innerText = el.name
+            p_row.innerText = `${el.name} - Cantidad: ${el.cantidad}`
             p_row.className = "pRow"
-    
+
             row.appendChild(img_row);
             row.appendChild(p_row);
 
             listU.appendChild(row);
-            
+
         })
         prinBox.appendChild(listU);
-    } 
+    }
 }
 
 function showCart(cartArray) {
     prinBox.innerHTML ="";
+    // if (){
+
+    // }
     createCart(cartArray)
 }
