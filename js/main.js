@@ -104,6 +104,7 @@ function updateCartArray(prodID) {
 
 function showCards(flowers) {
     prinBox.innerHTML = "";
+    prinBox.className = "page";
     createCards(flowers);
 }
 
@@ -146,5 +147,6 @@ function createCart(cartArray) {
 
 function showCart(cartArray) {
     prinBox.innerHTML = "";
+    prinBox.className = "page change";
     createCart(cartArray);
 }

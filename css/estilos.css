@@ -55,3 +55,23 @@ body {
     border-color: black;
     width: 10px;
 }
+
+.page.change {
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+}
+.cardStyle {
+    text-align: center;
+}
+
+.textCart {
+    margin: 10px;
+    text-align: left;
+}
+
+.pRow {
+    align-content: center;
+    margin: 0px;
+    font: message-box;
+}
