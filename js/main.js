@@ -1,9 +1,9 @@
 const box = document.getElementById("conteiner");
 box.className = "box";
 
-const title = document.createElement("h1")
-title.innerText = "Bienvenido a nuestra tienda de flores y ramos Lunaria"
-title.className = "title"
+const title = document.createElement("h1");
+title.innerText = "Bienvenido a nuestra tienda de flores y ramos Lunaria";
+title.className = "title";
 
 const products = document.createElement("button");
 products.id = "products";
@@ -20,16 +20,21 @@ box.appendChild(products);
 box.appendChild(cart);
 
 const prinBox = document.getElementById("page");
-page.className = "page";
+prinBox.className = "page";
 
 products.addEventListener("click", () => showCards(flowers));
 
-let cartArray = JSON.parse(localStorage.getItem("cartArray")) || [];;
+let cartArray = JSON.parse(localStorage.getItem("cartArray")) || [];
 
 let counters = flowers.reduce((acc, flower) => {
     acc[flower.id] = 0;
     return acc;
 }, {});
+
+// Actualizar los contadores con los valores de cartArray
+cartArray.forEach(item => {
+    counters[item.id] = item.cantidad;
+});
 
 function createCards(flowers) {
     flowers.forEach((el) => {
@@ -54,7 +59,7 @@ function createCards(flowers) {
         cont.value = counters[el.id];
         cont.id = "counter_" + el.id;
         cont.readOnly = true;
-        cont.className = "counter"
+        cont.className = "counter";
 
         button1.addEventListener("click", () => modifyProducts("+", el.id));
         button2.addEventListener("click", () => modifyProducts("-", el.id));
@@ -70,27 +75,36 @@ function createCards(flowers) {
     });
 }
 
-function modifyProducts (op, prodID) {
-    if (op === "+"){
-        counters[prodID] +=1;
-    } else if (op === "-" && counters[prodID] > 0){
-        counters[prodID] -=1;
+function modifyProducts(op, prodID) {
+    if (op === "+") {
+        counters[prodID] += 1;
+    } else if (op === "-" && counters[prodID] > 0) {
+        counters[prodID] -= 1;
     }
-    flowers[prodID].cantidad = counters[prodID]
+    updateCartArray(prodID);
     const contadorEnDOM = document.getElementById("counter_" + prodID);
     contadorEnDOM.value = counters[prodID];
-    cartArray = flowers.filter((el) => counters[el.id] > 0)
-    
+    localStorage.setItem("cartArray", JSON.stringify(cartArray));
+    console.log(JSON.stringify(cartArray));
+}
 
-    localStorage.setItem("cartArray", (JSON.stringify(cartArray)))
-
-    console.log(JSON.stringify(cartArray))
+function updateCartArray(prodID) {
+    const existingProduct = cartArray.find(item => item.id === prodID);
+    if (existingProduct) {
+        if (counters[prodID] > 0) {
+            existingProduct.cantidad = counters[prodID];
+        } else {
+            cartArray = cartArray.filter(item => item.id !== prodID);
+        }
+    } else if (counters[prodID] > 0) {
+        const product = flowers.find(el => el.id === prodID);
+        cartArray.push({ ...product, cantidad: counters[prodID] });
+    }
 }
 
 function showCards(flowers) {
-    prinBox.innerHTML ="";
-
-    createCards(flowers)
+    prinBox.innerHTML = "";
+    createCards(flowers);
 }
 
 cart.addEventListener("click", () => showCart(cartArray));
@@ -100,42 +114,37 @@ function createCart(cartArray) {
     listU.id = "list";
     listU.innerHTML = "";
 
-    if(cartArray.length === 0) {
-        const anyProducts = document.createElement("p")
-        anyProducts.innerText = "No hay productos en tu carrito"
-
-        prinBox.appendChild(anyProducts)
+    if (cartArray.length === 0) {
+        const anyProducts = document.createElement("p");
+        anyProducts.innerText = "No hay productos en tu carrito";
+        prinBox.appendChild(anyProducts);
     } else {
         const text = document.createElement("h1");
-        text.innerText = "Tus productos seleccionados: "
-        text.className = "textCart"
-        listU.appendChild(text)
+        text.innerText = "Tus productos seleccionados: ";
+        text.className = "textCart";
+        listU.appendChild(text);
         cartArray.forEach((el) => {
             const row = document.createElement("li");
-            row.className = "row"
+            row.className = "row";
 
             const img_row = document.createElement("img");
-            img_row.src = el.img
-            img_row.className = "imgRow"
+            img_row.src = el.img;
+            img_row.className = "imgRow";
 
             const p_row = document.createElement("p");
-            p_row.innerText = `${el.name} - Cantidad: ${el.cantidad}`
-            p_row.className = "pRow"
+            p_row.innerText = `${el.name} - Cantidad: ${el.cantidad}`;
+            p_row.className = "pRow";
 
             row.appendChild(img_row);
             row.appendChild(p_row);
 
             listU.appendChild(row);
-
-        })
+        });
         prinBox.appendChild(listU);
     }
 }
 
 function showCart(cartArray) {
-    prinBox.innerHTML ="";
-    // if (){
-
-    // }
-    createCart(cartArray)
+    prinBox.innerHTML = "";  // Limpiar el contenido de prinBox antes de renderizar
+    createCart(cartArray);
 }
