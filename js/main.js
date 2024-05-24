@@ -85,7 +85,7 @@ function modifyProducts(op, prodID) {
     const contadorEnDOM = document.getElementById("counter_" + prodID);
     contadorEnDOM.value = counters[prodID];
     localStorage.setItem("cartArray", JSON.stringify(cartArray));
-    console.log(JSON.stringify(cartArray));
+    
 }
 
 function updateCartArray(prodID) {
