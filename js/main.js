@@ -145,6 +145,6 @@ function createCart(cartArray) {
 }
 
 function showCart(cartArray) {
-    prinBox.innerHTML = "";  // Limpiar el contenido de prinBox antes de renderizar
+    prinBox.innerHTML = "";
     createCart(cartArray);
 }
