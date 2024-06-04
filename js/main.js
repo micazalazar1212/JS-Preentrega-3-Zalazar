@@ -22,10 +22,12 @@ box.appendChild(cart);
 const prinBox = document.getElementById("page");
 prinBox.className = "page";
 
-products.addEventListener("click", () => showCards(flowers));
-
 let cartArray = JSON.parse(localStorage.getItem("cartArray")) || [];
 
+let contador = 0
+products.addEventListener("click", () => showCards(flowers, cartArray));
+
+// Creamos un contador para cada flor y lo incializamos a cada uno en 0
 let counters = flowers.reduce((acc, flower) => {
     acc[flower.id] = 0;
     return acc;
@@ -102,9 +104,17 @@ function updateCartArray(prodID) {
     }
 }
 
-function showCards(flowers) {
+
+function showCards(flowers, cartArray) {
+    contador++;
+    console.log(contador)
     prinBox.innerHTML = "";
     prinBox.className = "page";
+    // si es la primera vez que se ingresa a la página y hay cosas en el localStorage se pregunta si se quieren eliminar
+    if (contador == 1 && cartArray.length !== 0)  {
+        
+        askClean();
+    }
     createCards(flowers);
 }
 
@@ -136,8 +146,16 @@ function createCart(cartArray) {
             p_row.innerText = `${el.name} - Cantidad: ${el.cantidad}`;
             p_row.className = "pRow";
 
+            const deleteButton = document.createElement("button");
+            deleteButton.innerText = "x"
+            deleteButton.className = "dButton"
+
+            deleteButton.addEventListener("click", () => deleteProducts(el, cartArray))
+            console.log(cartArray)
+
             row.appendChild(img_row);
             row.appendChild(p_row);
+            row.appendChild(deleteButton);
 
             listU.appendChild(row);
         });
@@ -145,8 +163,67 @@ function createCart(cartArray) {
     }
 }
 
+function deleteProducts(el, cartArray) {
+    cartArray.splice(el.id, 1)
+    console.log(cartArray)
+}
+
+
 function showCart(cartArray) {
     prinBox.innerHTML = "";
     prinBox.className = "page change";
+
+    
     createCart(cartArray);
+}
+
+// Aca se pregunta, si ya hay cosas en el localStorage, si desea quitarlas o continuar donde dejó
+
+function askClean() {
+    Swal.fire({
+        title: "¿Deseas continuar con tu compra de la última vez?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si",
+        cancelButtonText: "No"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Toastify({
+                text: "Carrito restaurado",
+                duration: 3000,
+                gravity: 'bottom',
+                position: 'right',
+                style: {
+                    background: '#355C7D',  
+                    background: '-webkit-linear-gradient(to right, #C06C84, #6C5B7B, #355C7D)',
+                    background: 'linear-gradient(to right, #C06C84, #6C5B7B, #355C7D)', 
+
+                }
+            }).showToast();
+        } else {
+            Toastify({
+                text: "¡Carrito vacío!",
+                duration: 3000,
+                gravity: 'bottom',
+                position: 'right',
+                style: {
+                    background: '#355C7D',  
+                    background: '-webkit-linear-gradient(to right, #C06C84, #6C5B7B, #355C7D)',
+                    background: 'linear-gradient(to right, #C06C84, #6C5B7B, #355C7D)', 
+    
+                }
+            }).showToast();
+
+            cartArray = [];
+            localStorage.clear();
+            flowers.forEach((el) => {
+                counters[el.id] = 0
+                const contDOM = document.getElementById("counter_" + el.id);
+                contDOM.value = counters[el.id];
+            });
+            
+        }
+    });
 }

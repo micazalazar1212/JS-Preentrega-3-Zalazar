@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 body {
     padding: 0px;
     margin: 0px;
     text-align: center;
-    background-color: bisque;
+    background-color: white;
 }
 
 .title {
@@ -23,14 +25,14 @@ body {
 }
 
 .box {
-    background-color: pink;
+    background-color: #f7cfff;
 }
 
 .page {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    
+    padding-top: 10px;
 }
 
 .imgCards {
@@ -63,15 +65,22 @@ body {
 }
 .cardStyle {
     text-align: center;
+    padding: 20px; 
 }
 
 .textCart {
     margin: 10px;
     text-align: left;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
 }
 
 .pRow {
     align-content: center;
     margin: 0px;
     font: message-box;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
