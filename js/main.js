@@ -102,6 +102,7 @@ function updateCartArray(prodID) {
         const product = flowers.find(el => el.id === prodID);
         cartArray.push({ ...product, cantidad: counters[prodID] });
     }
+    localStorage.setItem("cartArray", JSON.stringify(cartArray));
 }
 
 
@@ -112,7 +113,6 @@ function showCards(flowers, cartArray) {
     prinBox.className = "page";
     // si es la primera vez que se ingresa a la página y hay cosas en el localStorage se pregunta si se quieren eliminar
     if (contador == 1 && cartArray.length !== 0)  {
-        
         askClean();
     }
     createCards(flowers);
@@ -150,8 +150,7 @@ function createCart(cartArray) {
             deleteButton.innerText = "x"
             deleteButton.className = "dButton"
 
-            deleteButton.addEventListener("click", () => deleteProducts(el, cartArray))
-            console.log(cartArray)
+            deleteButton.addEventListener("click", () => deleteProducts(el, row))
 
             row.appendChild(img_row);
             row.appendChild(p_row);
@@ -163,17 +162,23 @@ function createCart(cartArray) {
     }
 }
 
-function deleteProducts(el, cartArray) {
-    cartArray.splice(el.id, 1)
-    console.log(cartArray)
-}
+// function deleteProducts(el, cartArray) {
+//     // cartArray.splice(id - 1 , 1)
+//     cartArray = cartArray.filter(item => item.id !== el.id);  
 
+//     console.log(cartArray)
+// }
+function deleteProducts(el, row) {
+    cartArray = cartArray.filter(item => item.id !== el.id);
+    localStorage.setItem("cartArray", JSON.stringify(cartArray));
+    counters[el.id] = 0;
+    row.remove();
+    showCart(cartArray);
+}
 
 function showCart(cartArray) {
     prinBox.innerHTML = "";
-    prinBox.className = "page change";
-
-    
+    prinBox.className = "page change";    
     createCart(cartArray);
 }
 
