@@ -12,8 +12,6 @@ fetch("./js/data.json")
             counters[item.id] = item.cantidad;
         });
         });
-    
-
 
 const box = document.getElementById("conteiner");
 box.className = "box";
@@ -51,8 +49,6 @@ function countersFun(flowers) {
         return acc;
     }, {});
 }
-
-
 
 function createCards(flowers) {
     flowers.forEach((el) => {
@@ -121,7 +117,6 @@ function updateCartArray(prodID) {
     localStorage.setItem("cartArray", JSON.stringify(cartArray));
 }
 
-
 function showCards(flowers, cartArray) {
     contador++;
     console.log(contador)
@@ -178,12 +173,6 @@ function createCart(cartArray) {
     }
 }
 
-// function deleteProducts(el, cartArray) {
-//     // cartArray.splice(id - 1 , 1)
-//     cartArray = cartArray.filter(item => item.id !== el.id);  
-
-//     console.log(cartArray)
-// }
 function deleteProducts(el, row) {
     cartArray = cartArray.filter(item => item.id !== el.id);
     localStorage.setItem("cartArray", JSON.stringify(cartArray));
@@ -199,7 +188,6 @@ function showCart(cartArray) {
 }
 
 // Aca se pregunta, si ya hay cosas en el localStorage, si desea quitarlas o continuar donde dejó
-
 function askClean() {
     Swal.fire({
         title: "¿Deseas continuar con tu compra de la última vez?",
