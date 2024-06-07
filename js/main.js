@@ -1,3 +1,20 @@
+const flowers = [];
+
+fetch("./js/data.json")
+    .then(response => response.json())
+    .then(data => {
+        flowers.push(...data)
+        
+        counters = countersFun(flowers)
+
+        // Actualiza los contadores con los valores de cartArray
+        cartArray.forEach(item => {
+            counters[item.id] = item.cantidad;
+        });
+        });
+    
+
+
 const box = document.getElementById("conteiner");
 box.className = "box";
 
@@ -28,15 +45,14 @@ let contador = 0
 products.addEventListener("click", () => showCards(flowers, cartArray));
 
 // Creamos un contador para cada flor y lo incializamos a cada uno en 0
-let counters = flowers.reduce((acc, flower) => {
-    acc[flower.id] = 0;
-    return acc;
-}, {});
+function countersFun(flowers) {
+    return flowers.reduce((acc, flower) => {
+        acc[flower.id] = 0;
+        return acc;
+    }, {});
+}
 
-// Actualizar los contadores con los valores de cartArray
-cartArray.forEach(item => {
-    counters[item.id] = item.cantidad;
-});
+
 
 function createCards(flowers) {
     flowers.forEach((el) => {
